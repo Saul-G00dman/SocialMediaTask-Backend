@@ -1,0 +1,17 @@
+[33mcommit de80a71c24bee8983b99cbfc0495de9755f70913[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: Rakshit Rawat <sayamr086@gmail.com>
+Date:   Thu Jan 16 00:48:19 2025 +0530
+
+    models relocation
+
+[33mcommit 8ae6de45101bc6a920f6e76dbcbac27d8bc80ae3[m
+Author: Rakshit Rawat <sayamr086@gmail.com>
+Date:   Thu Jan 16 00:38:36 2025 +0530
+
+    Turned into Serverless
+
+[33mcommit 3fe76db99bdd7e159e2aef6dafff507e69531403[m
+Author: Rakshit Rawat <sayamr086@gmail.com>
+Date:   Thu Jan 16 00:09:33 2025 +0530
+
+    Backend Done
