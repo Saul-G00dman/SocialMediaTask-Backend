@@ -40,7 +40,9 @@ mongoose.connect(process.env.MONGODB_URI)
     .then(() => console.log('Connected to MongoDB'))
     .catch(err => console.error('MongoDB connection error:', err));
 
+
 // Routes
+//POST METHOD
 app.post('/api/submissions', async (req, res) => {
     try {
         // Handle upload with better error catching
@@ -110,7 +112,7 @@ app.post('/api/submissions', async (req, res) => {
     }
 });
 
-// Get route with error handling
+//GET METHOD
 app.get('/api/submissions', async (req, res) => {
     try {
         const submissions = await Submission.find().sort({ createdAt: -1 });
@@ -122,7 +124,42 @@ app.get('/api/submissions', async (req, res) => {
     }
 });
 
-// Delete route remains the same...
+//DELETE METHOD
+app.delete('/api/submissions/:id', async (req, res) => {
+    try {
+        const submission = await Submission.findById(req.params.id);
+        
+        if (!submission) {
+            return res.status(404).json({ error: 'Submission not found' });
+        }
+
+        // Delete images from Cloudinary
+        for (const imageUrl of submission.images) {
+            try {
+                // Extract public ID from Cloudinary URL
+                if (imageUrl.includes('cloudinary')) {
+                    const publicId = `submissions/${imageUrl.split('/').pop().split('.')[0]}`;
+                    await cloudinary.uploader.destroy(publicId);
+                    console.log('Deleted from Cloudinary:', publicId);
+                }
+            } catch (cloudinaryError) {
+                console.error('Cloudinary deletion error:', cloudinaryError);
+                // Continue with deletion even if Cloudinary fails
+            }
+        }
+
+        // Delete the submission from database
+        await Submission.findByIdAndDelete(req.params.id);
+        console.log('Submission deleted:', req.params.id);
+        
+        res.json({ message: 'Submission deleted successfully' });
+    } catch (error) {
+        console.error('Delete error:', error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
